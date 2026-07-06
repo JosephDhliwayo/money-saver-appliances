@@ -1,10 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AddToCartControls } from "@/components/add-to-cart-controls";
 import { formatPrice, getProductBySlug, products } from "@/lib/products";
 import { categoryGradient } from "@/lib/category-style";
 import { Reveal } from "@/components/reveal";
+import { ProductGallery } from "@/components/product-gallery";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -51,18 +51,11 @@ export default async function ProductPage({
 
       <div className="mt-6 grid min-w-0 gap-10 md:grid-cols-2">
         <Reveal className="min-w-0">
-          <div
-            className={`relative aspect-square rounded-lg border border-slate-200 bg-gradient-to-br ${categoryGradient[product.category]}`}
-          >
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              priority
-              className="object-contain p-12 transition-transform duration-300 hover:scale-105"
-              sizes="(min-width: 768px) 45vw, 90vw"
-            />
-          </div>
+          <ProductGallery
+            images={product.images ?? [product.image]}
+            alt={product.name}
+            gradientClass={categoryGradient[product.category]}
+          />
         </Reveal>
 
         <Reveal delay={0.1} className="min-w-0">

@@ -15,6 +15,7 @@ export type Product = {
   price: number;
   salePrice?: number;
   image: string;
+  images?: string[];
   rating: number;
   reviewCount: number;
   inStock: boolean;
@@ -269,7 +270,14 @@ export const products: Product[] = [
     category: "Refrigerators",
     price: 1049,
     salePrice: 899,
-    image: "/products/mora-mrs290t5fsd.svg",
+    image: "/products/mora-mrs290t5fsd/front.jpg",
+    images: [
+      "/products/mora-mrs290t5fsd/front.jpg",
+      "/products/mora-mrs290t5fsd/angled.jpg",
+      "/products/mora-mrs290t5fsd/interior.jpg",
+      "/products/mora-mrs290t5fsd/dispenser.jpg",
+      "/products/mora-mrs290t5fsd/energy-guide.jpg",
+    ],
     rating: 4.2,
     reviewCount: 5,
     inStock: true,
