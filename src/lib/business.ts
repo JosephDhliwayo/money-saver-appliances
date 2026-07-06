@@ -17,7 +17,7 @@ export const business = {
     "Local same-day delivery available on everything in the store, for a fee.",
   social: {
     facebook: "https://www.facebook.com/share/1BHLLq53Cf/?mibextid=wwXIfr",
-    instagram: "#",
-    tiktok: "#",
+    instagram: "https://www.instagram.com/moneysaverappliances?igsh=MWdtNW9teWppeHNucQ==",
+    tiktok: "https://www.tiktok.com/@moneysaver599?_r=1&_t=ZT-97lEg18r2WD",
   },
 };
