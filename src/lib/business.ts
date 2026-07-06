@@ -16,7 +16,7 @@ export const business = {
   deliveryTagline:
     "Local same-day delivery available on everything in the store, for a fee.",
   social: {
-    facebook: "#",
+    facebook: "https://www.facebook.com/share/1BHLLq53Cf/?mibextid=wwXIfr",
     instagram: "#",
     tiktok: "#",
   },
