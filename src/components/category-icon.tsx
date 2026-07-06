@@ -5,6 +5,8 @@ const categoryStyles: Record<Category, { bg: string; fg: string }> = {
   "Stoves & Ranges": { bg: "bg-orange-100", fg: "text-orange-700" },
   Washers: { bg: "bg-blue-100", fg: "text-blue-700" },
   Dryers: { bg: "bg-violet-100", fg: "text-violet-700" },
+  Dishwashers: { bg: "bg-sky-100", fg: "text-sky-700" },
+  Microwaves: { bg: "bg-amber-100", fg: "text-amber-700" },
 };
 
 function IconGlyph({ category }: { category: Category }) {
@@ -45,6 +47,24 @@ function IconGlyph({ category }: { category: Category }) {
           <path d="M9.5 13a2.5 2.5 0 1 0 5 0" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
           <circle cx="7" cy="6" r="0.9" fill="currentColor" />
           <circle cx="10" cy="6" r="0.9" fill="currentColor" />
+        </svg>
+      );
+    case "Dishwashers":
+      return (
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none">
+          <rect x="4" y="3" width="16" height="18" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
+          <line x1="6" y1="7.5" x2="18" y2="7.5" stroke="currentColor" strokeWidth="1.6" />
+          <rect x="6.5" y="10" width="11" height="8" rx="1" stroke="currentColor" strokeWidth="1.3" />
+        </svg>
+      );
+    case "Microwaves":
+      return (
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none">
+          <rect x="2.5" y="6" width="19" height="12" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
+          <rect x="4.5" y="8" width="11" height="8" rx="1" stroke="currentColor" strokeWidth="1.3" />
+          <circle cx="18.5" cy="10" r="0.9" fill="currentColor" />
+          <line x1="17" y1="13" x2="20" y2="13" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+          <line x1="17" y1="15" x2="20" y2="15" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
         </svg>
       );
   }
