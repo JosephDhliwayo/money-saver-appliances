@@ -5,7 +5,7 @@ import { SocialLinks } from "@/components/social-links";
 export function SiteFooter() {
   return (
     <footer className="mt-16 border-t border-slate-200 bg-slate-900 text-slate-300">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-4">
         <div>
           <p className="text-lg font-semibold text-white">{business.name}</p>
           <p className="mt-2 text-sm text-slate-400">
@@ -38,6 +38,31 @@ export function SiteFooter() {
                 {h.label}: {h.value}
               </li>
             ))}
+          </ul>
+        </div>
+        <div>
+          <p className="text-sm font-semibold text-white">Legal</p>
+          <ul className="mt-2 space-y-1 text-sm text-slate-400">
+            <li>
+              <Link href="/legal/privacy-policy" className="hover:text-white">
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link href="/legal/terms" className="hover:text-white">
+                Terms &amp; Conditions
+              </Link>
+            </li>
+            <li>
+              <Link href="/legal/returns-refund-policy" className="hover:text-white">
+                Returns &amp; Refunds
+              </Link>
+            </li>
+            <li>
+              <Link href="/legal" className="hover:text-white">
+                More legal info
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

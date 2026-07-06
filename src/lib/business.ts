@@ -2,6 +2,7 @@ export const business = {
   name: "Money Saver Appliances",
   phone: "850-491-7248",
   phoneHref: "tel:+18504917248",
+  email: "support@moneysaverappliances.com",
   address: {
     street: "21 Washington Street",
     city: "Chattahoochee, FL",
