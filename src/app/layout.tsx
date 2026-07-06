@@ -4,6 +4,7 @@ import "./globals.css";
 import { CartProvider } from "@/context/cart-context";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { TermsConsentModal } from "@/components/terms-consent-modal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,6 +43,7 @@ export default function RootLayout({
           <SiteHeader />
           <main className="flex-1">{children}</main>
           <SiteFooter />
+          <TermsConsentModal />
         </CartProvider>
       </body>
     </html>
