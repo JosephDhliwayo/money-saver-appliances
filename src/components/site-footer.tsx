@@ -67,8 +67,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-slate-800 px-4 py-4 text-center text-xs text-slate-500 sm:px-6">
-        &copy; {new Date().getFullYear()} {business.name}. Product prices
-        shown are placeholders for demo purposes.
+        &copy; {new Date().getFullYear()} {business.name}. All rights reserved.
       </div>
     </footer>
   );
