@@ -1,5 +1,5 @@
 import { ProductCard } from "@/components/product-card";
-import { CategoryIcon } from "@/components/category-icon";
+import { CategoryDropdown } from "@/components/category-dropdown";
 import { WhyUs } from "@/components/why-us";
 import { Hero } from "@/components/hero";
 import { MotionLink } from "@/components/motion-link";
@@ -28,23 +28,9 @@ export default async function Home() {
             Shop by category
           </h2>
         </Reveal>
-        <RevealGroup className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {categories.map((category) => (
-            <RevealItem key={category}>
-              <MotionLink
-                href={`/products?category=${encodeURIComponent(category)}`}
-                whileHover={{ y: -4 }}
-                whileTap={{ scale: 0.97 }}
-                className="flex flex-col items-center gap-3 rounded-lg border border-slate-200 bg-white p-6 text-center shadow-sm transition-colors hover:border-teal-700 hover:shadow-md"
-              >
-                <CategoryIcon category={category} />
-                <span className="text-sm font-semibold text-slate-800">
-                  {category}
-                </span>
-              </MotionLink>
-            </RevealItem>
-          ))}
-        </RevealGroup>
+        <Reveal delay={0.05} className="mt-6">
+          <CategoryDropdown categories={categories} />
+        </Reveal>
       </section>
 
       {featured.length > 0 && (
