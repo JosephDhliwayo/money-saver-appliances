@@ -12,7 +12,9 @@ export const revalidate = 60;
 
 export default async function Home() {
   const products = await getAllProducts();
-  const featured = products.filter((p) => p.salePrice !== undefined).slice(0, 4);
+  const onSale = products.filter((p) => p.salePrice !== undefined);
+  const featured = (onSale.length > 0 ? onSale : products).slice(0, 4);
+  const featuredTitle = onSale.length > 0 ? "Current deals" : "Featured products";
 
   return (
     <div>
@@ -50,7 +52,7 @@ export default async function Home() {
           <Reveal>
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold text-slate-900">
-                Current deals
+                {featuredTitle}
               </h2>
               <MotionLink
                 href="/products"
