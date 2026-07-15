@@ -4,7 +4,8 @@ export type Category =
   | "Washers"
   | "Dryers"
   | "Dishwashers"
-  | "Microwaves";
+  | "Microwaves"
+  | "Other";
 
 export type Product = {
   id: string;
@@ -24,8 +25,6 @@ export type Product = {
   specs: Record<string, string>;
 };
 
-export const products: Product[] = [];
-
 export const categories: Category[] = [
   "Refrigerators",
   "Stoves & Ranges",
@@ -34,15 +33,6 @@ export const categories: Category[] = [
   "Dishwashers",
   "Microwaves",
 ];
-
-export function getProductBySlug(slug: string): Product | undefined {
-  return products.find((p) => p.slug === slug);
-}
-
-export function getProductsByCategory(category?: Category): Product[] {
-  if (!category) return products;
-  return products.filter((p) => p.category === category);
-}
 
 export function formatPrice(amount: number): string {
   return new Intl.NumberFormat("en-US", {

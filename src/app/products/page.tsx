@@ -1,11 +1,14 @@
 import { ProductCard } from "@/components/product-card";
 import { CategoryFilterPills } from "@/components/category-filter-pills";
 import { RevealGroup, RevealItem } from "@/components/reveal";
-import { categories, getProductsByCategory, type Category } from "@/lib/products";
+import { categories, type Category } from "@/lib/products";
+import { getProductsByCategory } from "@/lib/shopify";
 
 export const metadata = {
   title: "All Products | Money Saver Appliances",
 };
+
+export const revalidate = 60;
 
 function isCategory(value: string | undefined): value is Category {
   return categories.includes(value as Category);
@@ -18,7 +21,7 @@ export default async function ProductsPage({
 }) {
   const { category: rawCategory } = await searchParams;
   const category = isCategory(rawCategory) ? rawCategory : undefined;
-  const items = getProductsByCategory(category);
+  const items = await getProductsByCategory(category);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">

@@ -7,6 +7,7 @@ const categoryStyles: Record<Category, { bg: string; fg: string }> = {
   Dryers: { bg: "bg-violet-100", fg: "text-violet-700" },
   Dishwashers: { bg: "bg-sky-100", fg: "text-sky-700" },
   Microwaves: { bg: "bg-amber-100", fg: "text-amber-700" },
+  Other: { bg: "bg-slate-100", fg: "text-slate-700" },
 };
 
 function IconGlyph({ category }: { category: Category }) {
@@ -65,6 +66,14 @@ function IconGlyph({ category }: { category: Category }) {
           <circle cx="18.5" cy="10" r="0.9" fill="currentColor" />
           <line x1="17" y1="13" x2="20" y2="13" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
           <line x1="17" y1="15" x2="20" y2="15" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+        </svg>
+      );
+    case "Other":
+      return (
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none">
+          <path d="M3.5 8.5 12 4l8.5 4.5-8.5 4.5-8.5-4.5Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+          <path d="M3.5 8.5V16L12 20l8.5-4V8.5" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+          <line x1="12" y1="13" x2="12" y2="20" stroke="currentColor" strokeWidth="1.6" />
         </svg>
       );
   }

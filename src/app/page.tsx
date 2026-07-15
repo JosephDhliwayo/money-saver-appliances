@@ -4,10 +4,14 @@ import { WhyUs } from "@/components/why-us";
 import { Hero } from "@/components/hero";
 import { MotionLink } from "@/components/motion-link";
 import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
-import { categories, products } from "@/lib/products";
+import { categories } from "@/lib/products";
+import { getAllProducts } from "@/lib/shopify";
 import { business } from "@/lib/business";
 
-export default function Home() {
+export const revalidate = 60;
+
+export default async function Home() {
+  const products = await getAllProducts();
   const featured = products.filter((p) => p.salePrice !== undefined).slice(0, 4);
 
   return (

@@ -4,10 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { useCart } from "@/context/cart-context";
-import { formatPrice, getProductBySlug } from "@/lib/products";
+import { formatPrice } from "@/lib/products";
 
 export default function CheckoutPage() {
-  const { items, subtotal, clearCart } = useCart();
+  const { items, subtotal, clearCart, getProduct } = useCart();
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [orderNumber, setOrderNumber] = useState("");
 
@@ -196,7 +196,7 @@ export default function CheckoutPage() {
           </h2>
           <ul className="mt-4 space-y-3">
             {items.map((item) => {
-              const product = getProductBySlug(item.slug);
+              const product = getProduct(item.slug);
               if (!product) return null;
               const price = product.salePrice ?? product.price;
               return (

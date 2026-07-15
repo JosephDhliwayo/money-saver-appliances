@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
         hostname: "images.pexels.com",
         pathname: "/photos/**",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.shopify.com",
+        pathname: "/**",
+      },
     ],
   },
 };

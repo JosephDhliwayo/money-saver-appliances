@@ -9,7 +9,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { getProductBySlug } from "@/lib/products";
+import type { Product } from "@/lib/products";
 
 export type CartItem = {
   slug: string;
@@ -24,6 +24,7 @@ type CartContextValue = {
   clearCart: () => void;
   itemCount: number;
   subtotal: number;
+  getProduct: (slug: string) => Product | undefined;
 };
 
 const CartContext = createContext<CartContextValue | undefined>(undefined);
@@ -32,6 +33,7 @@ const STORAGE_KEY = "money-saver-cart";
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [hydrated, setHydrated] = useState(false);
+  const [productsBySlug, setProductsBySlug] = useState<Record<string, Product>>({});
 
   useEffect(() => {
     try {
@@ -42,6 +44,29 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
     setHydrated(true);
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/products")
+      .then((res) => res.json())
+      .then((products: Product[]) => {
+        if (cancelled) return;
+        setProductsBySlug(
+          Object.fromEntries(products.map((p) => [p.slug, p]))
+        );
+      })
+      .catch(() => {
+        // ignore — cart will just show items without pricing until retried
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const getProduct = useCallback(
+    (slug: string) => productsBySlug[slug],
+    [productsBySlug]
+  );
 
   useEffect(() => {
     if (!hydrated) return;
@@ -81,12 +106,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const subtotal = useMemo(
     () =>
       items.reduce((sum, i) => {
-        const product = getProductBySlug(i.slug);
+        const product = productsBySlug[i.slug];
         if (!product) return sum;
         const price = product.salePrice ?? product.price;
         return sum + price * i.quantity;
       }, 0),
-    [items]
+    [items, productsBySlug]
   );
 
   const value: CartContextValue = {
@@ -97,6 +122,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     clearCart,
     itemCount,
     subtotal,
+    getProduct,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

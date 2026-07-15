@@ -4,11 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { useCart } from "@/context/cart-context";
-import { formatPrice, getProductBySlug } from "@/lib/products";
+import { formatPrice } from "@/lib/products";
 import { business } from "@/lib/business";
 
 export default function CartPage() {
-  const { items, removeItem, setQuantity, subtotal } = useCart();
+  const { items, removeItem, setQuantity, subtotal, getProduct } = useCart();
 
   if (items.length === 0) {
     return (
@@ -42,7 +42,7 @@ export default function CartPage() {
       <div className="mt-6 divide-y divide-slate-200 border-y border-slate-200">
         <AnimatePresence initial={false} mode="popLayout">
         {items.map((item) => {
-          const product = getProductBySlug(item.slug);
+          const product = getProduct(item.slug);
           if (!product) return null;
           const price = product.salePrice ?? product.price;
 

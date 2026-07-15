@@ -7,4 +7,5 @@ export const categoryGradient: Record<Category, string> = {
   Dryers: "from-violet-50 to-violet-100/70",
   Dishwashers: "from-sky-50 to-sky-100/70",
   Microwaves: "from-amber-50 to-amber-100/70",
+  Other: "from-slate-50 to-slate-100/70",
 };
