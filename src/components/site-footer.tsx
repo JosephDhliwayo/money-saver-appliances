@@ -14,7 +14,7 @@ export function SiteFooter() {
             <Link href="/repairs" className="underline hover:text-white">
               repair appliances
             </Link>
-            , any brand &mdash; {business.repairTagline.toLowerCase()}
+            {" "}of any brand. We come to you!
           </p>
           <SocialLinks className="mt-5" />
         </div>

@@ -56,7 +56,7 @@ export default function RepairsPage() {
       </p>
       <p className="mt-4 text-slate-600">
         In addition to selling appliances, we repair them. Our technicians
-        service refrigerators, stoves &amp; ranges, washers, and dryers &mdash;
+        service refrigerators, stoves &amp; ranges, washers, and dryers of
         any brand, not just ones purchased from us. We&apos;re mobile, so we
         come to your home rather than you hauling the appliance to us.
       </p>
@@ -96,8 +96,8 @@ export default function RepairsPage() {
           Schedule a repair
         </p>
         <p className="mt-2 text-sm text-slate-600">
-          Call us to book a mobile service visit &mdash; we come to you. Most
-          repairs are scheduled within 2&ndash;3 business days.
+          Call us to book a mobile service visit and we&apos;ll come to you.
+          Most repairs are scheduled within 2&ndash;3 business days.
         </p>
         <div className="mt-4 flex flex-col gap-1 text-sm text-slate-700 sm:flex-row sm:gap-6">
           <a href={business.phoneHref} className="hover:text-teal-800">

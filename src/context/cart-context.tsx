@@ -56,7 +56,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         );
       })
       .catch(() => {
-        // ignore — cart will just show items without pricing until retried
+        // ignore, cart will just show items without pricing until retried
       });
     return () => {
       cancelled = true;

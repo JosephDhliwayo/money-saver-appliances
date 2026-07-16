@@ -5,7 +5,7 @@ import { HoverCard } from "@/components/hover-card";
 const reasons = [
   {
     title: "Local, family-owned",
-    description: `Serving ${business.address.city} and the surrounding area — not a big box chain.`,
+    description: `Serving ${business.address.city} and the surrounding area, not a big box chain.`,
     bg: "bg-teal-100",
     fg: "text-teal-700",
     icon: (
@@ -42,7 +42,7 @@ const reasons = [
     ),
   },
   {
-    title: "We fix what we sell — and more",
+    title: "We fix what we sell, and more",
     description: business.repairTagline,
     bg: "bg-violet-100",
     fg: "text-violet-700",

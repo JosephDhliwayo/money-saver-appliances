@@ -67,9 +67,9 @@ export function Hero() {
             Big Brand Appliances. Small Store Prices.
           </motion.h1>
           <motion.p variants={item} className="mt-4 max-w-lg text-slate-300">
-            Refrigerators, ranges, washers, and dryers &mdash; in stock and
-            ready to deliver, with prices that beat the big box stores.
-            Serving {business.address.city} and the surrounding area.
+            Refrigerators, ranges, washers, and dryers, in stock and ready
+            to deliver, with prices that beat the big box stores. Serving
+            {" "}{business.address.city} and the surrounding area.
           </motion.p>
           <motion.div variants={item} className="mt-6 flex gap-3">
             <MotionLink

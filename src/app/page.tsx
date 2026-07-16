@@ -67,7 +67,7 @@ export default async function Home() {
             </h2>
             <p className="mt-1 text-sm text-slate-600">
               Refrigerator, stove, washer, or dryer on the fritz? Our
-              technicians fix any brand &mdash; not just ones bought from us.{" "}
+              technicians fix any brand, not just ones bought from us.{" "}
               {business.repairTagline}
             </p>
           </div>

@@ -15,7 +15,7 @@ export default function AboutPage() {
         is a family-owned appliance store in Chattahoochee, FL carrying
         refrigerators, stoves &amp; ranges, washers, and dryers from trusted
         brands. We keep our overhead low so we can pass the savings on to
-        you &mdash; without cutting corners on service.
+        you without cutting corners on service.
       </p>
       <p className="mt-4 text-slate-600">
         Every appliance we sell comes with a manufacturer warranty, and our

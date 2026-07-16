@@ -59,7 +59,7 @@ export default function CheckoutPage() {
           className="mt-2 text-slate-600"
         >
           Order <span className="font-semibold">{orderNumber}</span>{" "}
-          has been received. This is a demo checkout &mdash; no payment was
+          has been received. This is a demo checkout, so no payment was
           actually processed.
         </motion.p>
         <motion.div
@@ -101,7 +101,7 @@ export default function CheckoutPage() {
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <h1 className="text-2xl font-bold text-slate-900">Checkout</h1>
       <p className="mt-1 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-md px-3 py-2 inline-block">
-        Demo checkout &mdash; no real payment is processed.
+        Demo checkout. No real payment is processed.
       </p>
 
       <form
@@ -186,7 +186,7 @@ export default function CheckoutPage() {
             whileTap={{ scale: 0.98 }}
             className="w-full rounded-md bg-teal-700 px-6 py-3 text-sm font-semibold text-white hover:bg-teal-800"
           >
-            Place order &mdash; {formatPrice(total)}
+            Place order ({formatPrice(total)})
           </motion.button>
         </div>
 

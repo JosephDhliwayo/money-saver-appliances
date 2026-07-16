@@ -12,7 +12,7 @@ export const business = {
     { label: "Saturday", value: "10am–2pm" },
     { label: "Sunday", value: "10am–2pm" },
   ],
-  repairTagline: "Mobile Appliance Repair — we come to you!",
+  repairTagline: "Mobile Appliance Repair. We come to you!",
   deliveryTagline:
     "Local same-day delivery available on everything in the store, for a fee.",
   social: {
