@@ -1,14 +1,15 @@
 import type { Category } from "@/lib/products";
 
-const categoryStyles: Record<Category, { bg: string; fg: string }> = {
+const categoryStyles: Record<string, { bg: string; fg: string }> = {
   Refrigerators: { bg: "bg-teal-100", fg: "text-teal-700" },
   "Stoves & Ranges": { bg: "bg-orange-100", fg: "text-orange-700" },
   Washers: { bg: "bg-blue-100", fg: "text-blue-700" },
   Dryers: { bg: "bg-violet-100", fg: "text-violet-700" },
   Dishwashers: { bg: "bg-sky-100", fg: "text-sky-700" },
   Microwaves: { bg: "bg-amber-100", fg: "text-amber-700" },
-  Other: { bg: "bg-slate-100", fg: "text-slate-700" },
 };
+
+const defaultStyle = { bg: "bg-slate-100", fg: "text-slate-700" };
 
 function IconGlyph({ category }: { category: Category }) {
   switch (category) {
@@ -68,7 +69,7 @@ function IconGlyph({ category }: { category: Category }) {
           <line x1="17" y1="15" x2="20" y2="15" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
         </svg>
       );
-    case "Other":
+    default:
       return (
         <svg viewBox="0 0 24 24" width="26" height="26" fill="none">
           <path d="M3.5 8.5 12 4l8.5 4.5-8.5 4.5-8.5-4.5Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
@@ -80,7 +81,7 @@ function IconGlyph({ category }: { category: Category }) {
 }
 
 export function CategoryIcon({ category }: { category: Category }) {
-  const style = categoryStyles[category];
+  const style = categoryStyles[category] ?? defaultStyle;
   return (
     <span
       className={`flex h-14 w-14 items-center justify-center rounded-full ${style.bg} ${style.fg}`}

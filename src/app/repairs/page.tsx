@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { categories } from "@/lib/products";
 import { business } from "@/lib/business";
 
 export const metadata = {
@@ -78,15 +77,13 @@ export default function RepairsPage() {
                 </li>
               ))}
             </ul>
-            {categories.includes(service.category as (typeof categories)[number]) && (
-              <Link
-                href={`/products?category=${encodeURIComponent(service.category)}`}
-                className="mt-4 inline-block text-sm font-medium text-teal-700 hover:text-teal-800"
-              >
-                Shop new {service.category.toLowerCase()}
-                {" "}&rarr;
-              </Link>
-            )}
+            <Link
+              href={`/products?category=${encodeURIComponent(service.category)}`}
+              className="mt-4 inline-block text-sm font-medium text-teal-700 hover:text-teal-800"
+            >
+              Shop new {service.category.toLowerCase()}
+              {" "}&rarr;
+            </Link>
           </div>
         ))}
       </div>

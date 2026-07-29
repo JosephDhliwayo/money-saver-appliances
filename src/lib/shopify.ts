@@ -1,6 +1,5 @@
 import "server-only";
 import type { Category, Product } from "@/lib/products";
-import { categories as knownCategories } from "@/lib/products";
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN;
 const token = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
@@ -78,10 +77,9 @@ async function shopifyFetch<T>(
   return json.data as T;
 }
 
-function matchCategory(productType: string): Category {
-  const normalized = productType?.trim().toLowerCase();
-  const match = knownCategories.find((c) => c.toLowerCase() === normalized);
-  return match ?? "Other";
+function resolveCategory(productType: string): Category {
+  const trimmed = productType?.trim();
+  return trimmed ? trimmed : "Other";
 }
 
 function mapProduct(node: ShopifyProductNode): Product {
@@ -100,7 +98,7 @@ function mapProduct(node: ShopifyProductNode): Product {
     slug: node.handle,
     name: node.title,
     brand: node.vendor || "Unbranded",
-    category: matchCategory(node.productType),
+    category: resolveCategory(node.productType),
     price: onSale ? (compareAt as number) : rawPrice,
     salePrice: onSale ? rawPrice : undefined,
     image,
@@ -143,4 +141,14 @@ export async function getProductsByCategory(
   const all = await getAllProducts();
   if (!category) return all;
   return all.filter((p) => p.category === category);
+}
+
+export async function getCategories(): Promise<Category[]> {
+  const all = await getAllProducts();
+  const set = new Set(all.map((p) => p.category));
+  const named = Array.from(set)
+    .filter((c) => c !== "Other")
+    .sort((a, b) => a.localeCompare(b));
+  if (set.has("Other")) named.push("Other");
+  return named;
 }

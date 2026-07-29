@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { AddToCartControls } from "@/components/add-to-cart-controls";
 import { formatPrice } from "@/lib/products";
 import { getAllProducts, getProductByHandle } from "@/lib/shopify";
-import { categoryGradient } from "@/lib/category-style";
+import { getCategoryGradient } from "@/lib/category-style";
 import { Reveal } from "@/components/reveal";
 import { ProductGallery } from "@/components/product-gallery";
 
@@ -59,7 +59,7 @@ export default async function ProductPage({
           <ProductGallery
             images={product.images ?? [product.image]}
             alt={product.name}
-            gradientClass={categoryGradient[product.category]}
+            gradientClass={getCategoryGradient(product.category)}
           />
         </Reveal>
 

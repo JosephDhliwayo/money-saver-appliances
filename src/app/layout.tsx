@@ -5,6 +5,7 @@ import { CartProvider } from "@/context/cart-context";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { TermsConsentModal } from "@/components/terms-consent-modal";
+import { getCategories } from "@/lib/shopify";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,8 +19,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Money Saver Appliances",
-  description:
-    "Refrigerators, stoves, washers, and dryers at prices that make sense.",
+  description: "Appliances and more, at prices that make sense.",
 };
 
 export const viewport: Viewport = {
@@ -28,11 +28,13 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const categories = await getCategories();
+
   return (
     <html
       lang="en"
@@ -40,7 +42,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col overflow-x-hidden bg-slate-50 text-slate-900">
         <CartProvider>
-          <SiteHeader />
+          <SiteHeader categories={categories} />
           <main className="flex-1">{children}</main>
           <SiteFooter />
           <TermsConsentModal />

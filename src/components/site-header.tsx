@@ -4,9 +4,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useCart } from "@/context/cart-context";
-import { categories } from "@/lib/products";
+import type { Category } from "@/lib/products";
 
-export function SiteHeader() {
+export function SiteHeader({ categories }: { categories: Category[] }) {
   const { itemCount } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
 

@@ -1,11 +1,4 @@
-export type Category =
-  | "Refrigerators"
-  | "Stoves & Ranges"
-  | "Washers"
-  | "Dryers"
-  | "Dishwashers"
-  | "Microwaves"
-  | "Other";
+export type Category = string;
 
 export type Product = {
   id: string;
@@ -24,15 +17,6 @@ export type Product = {
   features: string[];
   specs: Record<string, string>;
 };
-
-export const categories: Category[] = [
-  "Refrigerators",
-  "Stoves & Ranges",
-  "Washers",
-  "Dryers",
-  "Dishwashers",
-  "Microwaves",
-];
 
 export function formatPrice(amount: number): string {
   return new Intl.NumberFormat("en-US", {

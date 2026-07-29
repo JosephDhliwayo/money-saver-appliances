@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { formatPrice, type Product } from "@/lib/products";
-import { categoryGradient } from "@/lib/category-style";
+import { getCategoryGradient } from "@/lib/category-style";
 
 export function ProductCard({ product }: { product: Product }) {
   const onSale = product.salePrice !== undefined;
@@ -12,7 +12,7 @@ export function ProductCard({ product }: { product: Product }) {
       className="group flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-white transition-all duration-200 hover:-translate-y-1 hover:border-teal-700 hover:shadow-lg"
     >
       <div
-        className={`relative aspect-square bg-gradient-to-br ${categoryGradient[product.category]}`}
+        className={`relative aspect-square bg-gradient-to-br ${getCategoryGradient(product.category)}`}
       >
         <Image
           src={product.image}
