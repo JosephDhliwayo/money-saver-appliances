@@ -1,6 +1,5 @@
 import { ProductCard } from "@/components/product-card";
 import { CategoryFilterPills } from "@/components/category-filter-pills";
-import { RevealGroup, RevealItem } from "@/components/reveal";
 import { getCategories, getProductsByCategory } from "@/lib/shopify";
 
 export const metadata = {
@@ -33,13 +32,11 @@ export default async function ProductsPage({
       {items.length === 0 ? (
         <p className="mt-10 text-slate-500">No products found.</p>
       ) : (
-        <RevealGroup className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {items.map((product) => (
-            <RevealItem key={product.id}>
-              <ProductCard product={product} />
-            </RevealItem>
+            <ProductCard key={product.id} product={product} />
           ))}
-        </RevealGroup>
+        </div>
       )}
     </div>
   );
