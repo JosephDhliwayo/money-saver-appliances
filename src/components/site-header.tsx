@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useCart } from "@/context/cart-context";
 import type { Category } from "@/lib/products";
 import { SearchBox } from "@/components/search-box";
+import { HeaderCategoryMenu } from "@/components/header-category-menu";
 
 export function SiteHeader({ categories }: { categories: Category[] }) {
   const { itemCount } = useCart();
@@ -15,25 +16,17 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-2 px-3 sm:px-6">
-        <Link href="/" className="flex min-w-0 flex-shrink items-center gap-2">
+        <Link href="/" className="flex flex-shrink-0 items-center gap-2">
           <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md bg-teal-700 text-sm font-bold text-white">
             MS
           </span>
-          <span className="truncate text-base font-semibold text-slate-900 sm:text-lg">
+          <span className="text-base font-semibold text-slate-900 sm:text-lg">
             Money Saver Appliances
           </span>
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
-          {categories.map((category) => (
-            <Link
-              key={category}
-              href={`/products?category=${encodeURIComponent(category)}`}
-              className="text-sm font-medium text-slate-600 hover:text-teal-700"
-            >
-              {category}
-            </Link>
-          ))}
+          <HeaderCategoryMenu categories={categories} />
           <Link
             href="/repairs"
             className="text-sm font-medium text-slate-600 hover:text-teal-700"
