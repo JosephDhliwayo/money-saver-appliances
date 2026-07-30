@@ -5,10 +5,12 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useCart } from "@/context/cart-context";
 import type { Category } from "@/lib/products";
+import { SearchBox } from "@/components/search-box";
 
 export function SiteHeader({ categories }: { categories: Category[] }) {
   const { itemCount } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
@@ -47,6 +49,18 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
         </nav>
 
         <div className="flex flex-shrink-0 items-center gap-2 sm:gap-3">
+          <button
+            type="button"
+            className="rounded-md border border-slate-300 p-2 text-slate-700 transition-colors hover:border-teal-700 hover:text-teal-700"
+            aria-label="Search"
+            aria-expanded={searchOpen}
+            onClick={() => setSearchOpen((v) => !v)}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8" />
+              <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+            </svg>
+          </button>
           <Link
             href="/cart"
             className="relative flex items-center gap-1.5 rounded-md border border-slate-300 px-2.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-teal-700 hover:text-teal-700 sm:px-3"
@@ -133,6 +147,22 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
           </button>
         </div>
       </div>
+
+      <AnimatePresence initial={false}>
+        {searchOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="overflow-hidden border-t border-slate-200"
+          >
+            <div className="mx-auto max-w-6xl px-4 py-3 sm:px-6">
+              <SearchBox onNavigate={() => setSearchOpen(false)} />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence initial={false}>
         {menuOpen && (

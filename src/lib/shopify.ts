@@ -136,11 +136,27 @@ export async function getProductByHandle(
 }
 
 export async function getProductsByCategory(
-  category?: Category
+  category?: Category,
+  query?: string
 ): Promise<Product[]> {
   const all = await getAllProducts();
-  if (!category) return all;
-  return all.filter((p) => p.category === category);
+  let results = all;
+
+  if (category) {
+    results = results.filter((p) => p.category === category);
+  }
+
+  const q = query?.trim().toLowerCase();
+  if (q) {
+    results = results.filter(
+      (p) =>
+        p.name.toLowerCase().includes(q) ||
+        p.brand.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q)
+    );
+  }
+
+  return results;
 }
 
 export async function getCategories(): Promise<Category[]> {
