@@ -6,10 +6,10 @@ import { AnimatePresence, motion } from "motion/react";
 import { useCart } from "@/context/cart-context";
 
 export function AddToCartControls({
-  slug,
+  variantId,
   inStock,
 }: {
-  slug: string;
+  variantId: string;
   inStock: boolean;
 }) {
   const { addItem } = useCart();
@@ -58,8 +58,8 @@ export function AddToCartControls({
         whileTap={inStock ? { scale: 0.96 } : undefined}
         animate={added ? { scale: [1, 1.06, 1] } : {}}
         transition={{ duration: 0.3 }}
-        onClick={() => {
-          addItem(slug, quantity);
+        onClick={async () => {
+          await addItem(variantId, quantity);
           setAdded(true);
           setTimeout(() => setAdded(false), 1500);
         }}
@@ -115,8 +115,8 @@ export function AddToCartControls({
         disabled={!inStock}
         whileHover={inStock ? { scale: 1.03 } : undefined}
         whileTap={inStock ? { scale: 0.96 } : undefined}
-        onClick={() => {
-          addItem(slug, quantity);
+        onClick={async () => {
+          await addItem(variantId, quantity);
           router.push("/cart");
         }}
         className="rounded-md border border-teal-700 px-6 py-2.5 text-sm font-semibold text-teal-700 transition-colors hover:bg-teal-50 disabled:cursor-not-allowed disabled:border-slate-300 disabled:text-slate-400"

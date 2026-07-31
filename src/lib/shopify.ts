@@ -22,6 +22,7 @@ type ShopifyProductNode = {
   variants: {
     edges: {
       node: {
+        id: string;
         price: ShopifyMoney;
         compareAtPrice: ShopifyMoney | null;
       };
@@ -42,6 +43,7 @@ const PRODUCT_FIELDS = `
   variants(first: 1) {
     edges {
       node {
+        id
         price { amount }
         compareAtPrice { amount }
       }
@@ -49,9 +51,71 @@ const PRODUCT_FIELDS = `
   }
 `;
 
+export type CartLineItem = {
+  id: string;
+  variantId: string;
+  slug: string;
+  name: string;
+  image: string;
+  price: number;
+  quantity: number;
+};
+
+export type CartData = {
+  id: string;
+  checkoutUrl: string;
+  lines: CartLineItem[];
+  subtotal: number;
+};
+
+type ShopifyCartNode = {
+  id: string;
+  checkoutUrl: string;
+  cost: { subtotalAmount: ShopifyMoney };
+  lines: {
+    edges: {
+      node: {
+        id: string;
+        quantity: number;
+        merchandise: {
+          id: string;
+          price: ShopifyMoney;
+          image: { url: string } | null;
+          product: { title: string; handle: string };
+        };
+      };
+    }[];
+  };
+};
+
+const CART_FIELDS = `
+  id
+  checkoutUrl
+  cost {
+    subtotalAmount { amount }
+  }
+  lines(first: 100) {
+    edges {
+      node {
+        id
+        quantity
+        merchandise {
+          ... on ProductVariant {
+            id
+            price { amount }
+            image { url }
+            product { title handle }
+          }
+        }
+      }
+    }
+  }
+`;
+
 async function shopifyFetch<T>(
   query: string,
-  variables?: Record<string, unknown>
+  variables?: Record<string, unknown>,
+  options: { cache?: boolean } = { cache: true }
 ): Promise<T | undefined> {
   if (!domain || !token) {
     console.error(
@@ -67,7 +131,9 @@ async function shopifyFetch<T>(
       "X-Shopify-Storefront-Access-Token": token,
     },
     body: JSON.stringify({ query, variables }),
-    next: { revalidate: 60 },
+    ...(options.cache
+      ? { next: { revalidate: 60 } }
+      : { cache: "no-store" as const }),
   });
 
   const json = await res.json();
@@ -95,6 +161,7 @@ function mapProduct(node: ShopifyProductNode): Product {
 
   return {
     id: node.id,
+    variantId: variant?.id ?? "",
     slug: node.handle,
     name: node.title,
     brand: node.vendor || "Unbranded",
@@ -167,4 +234,129 @@ export async function getCategories(): Promise<Category[]> {
     .sort((a, b) => a.localeCompare(b));
   if (set.has("Other")) named.push("Other");
   return named;
+}
+
+function mapCart(node: ShopifyCartNode): CartData {
+  return {
+    id: node.id,
+    checkoutUrl: node.checkoutUrl,
+    subtotal: parseFloat(node.cost.subtotalAmount.amount),
+    lines: node.lines.edges.map((e) => ({
+      id: e.node.id,
+      variantId: e.node.merchandise.id,
+      slug: e.node.merchandise.product.handle,
+      name: e.node.merchandise.product.title,
+      image: e.node.merchandise.image?.url ?? "/products/refrigerator.svg",
+      price: parseFloat(e.node.merchandise.price.amount),
+      quantity: e.node.quantity,
+    })),
+  };
+}
+
+export async function getCart(cartId: string): Promise<CartData | undefined> {
+  const data = await shopifyFetch<{ cart: ShopifyCartNode | null }>(
+    `query ($cartId: ID!) { cart(id: $cartId) { ${CART_FIELDS} } }`,
+    { cartId },
+    { cache: false }
+  );
+  return data?.cart ? mapCart(data.cart) : undefined;
+}
+
+export async function createCart(
+  merchandiseId: string,
+  quantity: number
+): Promise<CartData | undefined> {
+  const data = await shopifyFetch<{
+    cartCreate: { cart: ShopifyCartNode | null; userErrors: { message: string }[] };
+  }>(
+    `mutation ($lines: [CartLineInput!]!) {
+      cartCreate(input: { lines: $lines }) {
+        cart { ${CART_FIELDS} }
+        userErrors { message }
+      }
+    }`,
+    { lines: [{ merchandiseId, quantity }] },
+    { cache: false }
+  );
+  if (data?.cartCreate.userErrors.length) {
+    console.error("cartCreate error:", JSON.stringify(data.cartCreate.userErrors));
+  }
+  return data?.cartCreate.cart ? mapCart(data.cartCreate.cart) : undefined;
+}
+
+export async function addCartLines(
+  cartId: string,
+  merchandiseId: string,
+  quantity: number
+): Promise<CartData | undefined> {
+  // cartLinesAdd does not merge quantities into an existing line for the
+  // same merchandise, it silently no-ops. Check for an existing line first
+  // and increment it instead.
+  const current = await getCart(cartId);
+  const existingLine = current?.lines.find((l) => l.variantId === merchandiseId);
+  if (existingLine) {
+    return updateCartLine(cartId, existingLine.id, existingLine.quantity + quantity);
+  }
+
+  const data = await shopifyFetch<{
+    cartLinesAdd: { cart: ShopifyCartNode | null; userErrors: { message: string }[] };
+  }>(
+    `mutation ($cartId: ID!, $lines: [CartLineInput!]!) {
+      cartLinesAdd(cartId: $cartId, lines: $lines) {
+        cart { ${CART_FIELDS} }
+        userErrors { message }
+      }
+    }`,
+    { cartId, lines: [{ merchandiseId, quantity }] },
+    { cache: false }
+  );
+  if (data?.cartLinesAdd.userErrors.length) {
+    console.error("cartLinesAdd error:", JSON.stringify(data.cartLinesAdd.userErrors));
+  }
+  return data?.cartLinesAdd.cart ? mapCart(data.cartLinesAdd.cart) : undefined;
+}
+
+export async function updateCartLine(
+  cartId: string,
+  lineId: string,
+  quantity: number
+): Promise<CartData | undefined> {
+  const data = await shopifyFetch<{
+    cartLinesUpdate: { cart: ShopifyCartNode | null; userErrors: { message: string }[] };
+  }>(
+    `mutation ($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+      cartLinesUpdate(cartId: $cartId, lines: $lines) {
+        cart { ${CART_FIELDS} }
+        userErrors { message }
+      }
+    }`,
+    { cartId, lines: [{ id: lineId, quantity }] },
+    { cache: false }
+  );
+  if (data?.cartLinesUpdate.userErrors.length) {
+    console.error("cartLinesUpdate error:", JSON.stringify(data.cartLinesUpdate.userErrors));
+  }
+  return data?.cartLinesUpdate.cart ? mapCart(data.cartLinesUpdate.cart) : undefined;
+}
+
+export async function removeCartLines(
+  cartId: string,
+  lineIds: string[]
+): Promise<CartData | undefined> {
+  const data = await shopifyFetch<{
+    cartLinesRemove: { cart: ShopifyCartNode | null; userErrors: { message: string }[] };
+  }>(
+    `mutation ($cartId: ID!, $lineIds: [ID!]!) {
+      cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
+        cart { ${CART_FIELDS} }
+        userErrors { message }
+      }
+    }`,
+    { cartId, lineIds },
+    { cache: false }
+  );
+  if (data?.cartLinesRemove.userErrors.length) {
+    console.error("cartLinesRemove error:", JSON.stringify(data.cartLinesRemove.userErrors));
+  }
+  return data?.cartLinesRemove.cart ? mapCart(data.cartLinesRemove.cart) : undefined;
 }

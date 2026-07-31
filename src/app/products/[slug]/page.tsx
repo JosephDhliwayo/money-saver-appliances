@@ -102,7 +102,7 @@ export default async function ProductPage({
           )}
 
           <div className="mt-6">
-            <AddToCartControls slug={product.slug} inStock={product.inStock} />
+            <AddToCartControls variantId={product.variantId} inStock={product.inStock} />
           </div>
 
           {Object.keys(product.specs).length > 0 && (

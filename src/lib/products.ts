@@ -2,6 +2,7 @@ export type Category = string;
 
 export type Product = {
   id: string;
+  variantId: string;
   slug: string;
   name: string;
   brand: string;

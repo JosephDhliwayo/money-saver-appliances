@@ -9,120 +9,143 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { Product } from "@/lib/products";
-
-export type CartItem = {
-  slug: string;
-  quantity: number;
-};
+import type { CartData, CartLineItem } from "@/lib/shopify";
 
 type CartContextValue = {
-  items: CartItem[];
-  addItem: (slug: string, quantity?: number) => void;
-  removeItem: (slug: string) => void;
-  setQuantity: (slug: string, quantity: number) => void;
+  lines: CartLineItem[];
+  loading: boolean;
+  addItem: (variantId: string, quantity?: number) => Promise<void>;
+  removeItem: (lineId: string) => Promise<void>;
+  setQuantity: (lineId: string, quantity: number) => Promise<void>;
   clearCart: () => void;
   itemCount: number;
   subtotal: number;
-  getProduct: (slug: string) => Product | undefined;
+  checkoutUrl: string | undefined;
 };
 
 const CartContext = createContext<CartContextValue | undefined>(undefined);
-const STORAGE_KEY = "money-saver-cart";
+const STORAGE_KEY = "money-saver-cart-id";
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<CartData | null>(null);
+  const [loading, setLoading] = useState(false);
   const [hydrated, setHydrated] = useState(false);
-  const [productsBySlug, setProductsBySlug] = useState<Record<string, Product>>({});
 
   useEffect(() => {
-    try {
-      const stored = window.localStorage.getItem(STORAGE_KEY);
-      if (stored) setItems(JSON.parse(stored));
-    } catch {
-      // ignore malformed storage
+    const cartId = window.localStorage.getItem(STORAGE_KEY);
+    if (!cartId) {
+      setHydrated(true);
+      return;
     }
-    setHydrated(true);
-  }, []);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch("/api/products")
-      .then((res) => res.json())
-      .then((products: Product[]) => {
-        if (cancelled) return;
-        setProductsBySlug(
-          Object.fromEntries(products.map((p) => [p.slug, p]))
-        );
+    fetch(`/api/cart?cartId=${encodeURIComponent(cartId)}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: CartData | null) => {
+        if (data) {
+          setCart(data);
+        } else {
+          window.localStorage.removeItem(STORAGE_KEY);
+        }
       })
       .catch(() => {
-        // ignore, cart will just show items without pricing until retried
-      });
-    return () => {
-      cancelled = true;
-    };
+        // ignore, cart will just start empty
+      })
+      .finally(() => setHydrated(true));
   }, []);
 
-  const getProduct = useCallback(
-    (slug: string) => productsBySlug[slug],
-    [productsBySlug]
+  const saveCart = useCallback((data: CartData) => {
+    setCart(data);
+    window.localStorage.setItem(STORAGE_KEY, data.id);
+  }, []);
+
+  const addItem = useCallback(
+    async (variantId: string, quantity = 1) => {
+      setLoading(true);
+      try {
+        const res = await fetch("/api/cart", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            cartId: cart?.id,
+            merchandiseId: variantId,
+            quantity,
+          }),
+        });
+        if (res.ok) {
+          saveCart(await res.json());
+        }
+      } finally {
+        setLoading(false);
+      }
+    },
+    [cart?.id, saveCart]
   );
 
-  useEffect(() => {
-    if (!hydrated) return;
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  }, [items, hydrated]);
-
-  const addItem = useCallback((slug: string, quantity = 1) => {
-    setItems((prev) => {
-      const existing = prev.find((i) => i.slug === slug);
-      if (existing) {
-        return prev.map((i) =>
-          i.slug === slug ? { ...i, quantity: i.quantity + quantity } : i
-        );
+  const removeItem = useCallback(
+    async (lineId: string) => {
+      if (!cart) return;
+      setLoading(true);
+      try {
+        const res = await fetch("/api/cart", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cartId: cart.id, lineId }),
+        });
+        if (res.ok) {
+          saveCart(await res.json());
+        }
+      } finally {
+        setLoading(false);
       }
-      return [...prev, { slug, quantity }];
-    });
+    },
+    [cart, saveCart]
+  );
+
+  const setQuantity = useCallback(
+    async (lineId: string, quantity: number) => {
+      if (!cart) return;
+      if (quantity <= 0) {
+        await removeItem(lineId);
+        return;
+      }
+      setLoading(true);
+      try {
+        const res = await fetch("/api/cart", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cartId: cart.id, lineId, quantity }),
+        });
+        if (res.ok) {
+          saveCart(await res.json());
+        }
+      } finally {
+        setLoading(false);
+      }
+    },
+    [cart, saveCart, removeItem]
+  );
+
+  const clearCart = useCallback(() => {
+    setCart(null);
+    window.localStorage.removeItem(STORAGE_KEY);
   }, []);
 
-  const removeItem = useCallback((slug: string) => {
-    setItems((prev) => prev.filter((i) => i.slug !== slug));
-  }, []);
-
-  const setQuantity = useCallback((slug: string, quantity: number) => {
-    setItems((prev) => {
-      if (quantity <= 0) return prev.filter((i) => i.slug !== slug);
-      return prev.map((i) => (i.slug === slug ? { ...i, quantity } : i));
-    });
-  }, []);
-
-  const clearCart = useCallback(() => setItems([]), []);
+  const lines = useMemo(() => cart?.lines ?? [], [cart]);
 
   const itemCount = useMemo(
-    () => items.reduce((sum, i) => sum + i.quantity, 0),
-    [items]
-  );
-
-  const subtotal = useMemo(
-    () =>
-      items.reduce((sum, i) => {
-        const product = productsBySlug[i.slug];
-        if (!product) return sum;
-        const price = product.salePrice ?? product.price;
-        return sum + price * i.quantity;
-      }, 0),
-    [items, productsBySlug]
+    () => lines.reduce((sum, l) => sum + l.quantity, 0),
+    [lines]
   );
 
   const value: CartContextValue = {
-    items,
+    lines,
+    loading: loading || !hydrated,
     addItem,
     removeItem,
     setQuantity,
     clearCart,
     itemCount,
-    subtotal,
-    getProduct,
+    subtotal: cart?.subtotal ?? 0,
+    checkoutUrl: cart?.checkoutUrl,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

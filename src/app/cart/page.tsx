@@ -8,9 +8,9 @@ import { formatPrice } from "@/lib/products";
 import { business } from "@/lib/business";
 
 export default function CartPage() {
-  const { items, removeItem, setQuantity, subtotal, getProduct } = useCart();
+  const { lines, removeItem, setQuantity, subtotal, checkoutUrl, loading } = useCart();
 
-  if (items.length === 0) {
+  if (lines.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0, y: 12 }}
@@ -18,16 +18,22 @@ export default function CartPage() {
         transition={{ duration: 0.3 }}
         className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6"
       >
-        <h1 className="text-2xl font-bold text-slate-900">Your cart is empty</h1>
-        <p className="mt-2 text-slate-500">
-          Browse our appliances and add something you like.
-        </p>
-        <Link
-          href="/products"
-          className="mt-6 inline-block rounded-md bg-teal-700 px-6 py-2.5 text-sm font-semibold text-white hover:bg-teal-800"
-        >
-          Shop appliances
-        </Link>
+        <h1 className="text-2xl font-bold text-slate-900">
+          {loading ? "Loading your cart..." : "Your cart is empty"}
+        </h1>
+        {!loading && (
+          <>
+            <p className="mt-2 text-slate-500">
+              Browse our products and add something you like.
+            </p>
+            <Link
+              href="/products"
+              className="mt-6 inline-block rounded-md bg-teal-700 px-6 py-2.5 text-sm font-semibold text-white hover:bg-teal-800"
+            >
+              Shop now
+            </Link>
+          </>
+        )}
       </motion.div>
     );
   }
@@ -41,14 +47,9 @@ export default function CartPage() {
 
       <div className="mt-6 divide-y divide-slate-200 border-y border-slate-200">
         <AnimatePresence initial={false} mode="popLayout">
-        {items.map((item) => {
-          const product = getProduct(item.slug);
-          if (!product) return null;
-          const price = product.salePrice ?? product.price;
-
-          return (
+        {lines.map((line) => (
             <motion.div
-              key={item.slug}
+              key={line.id}
               layout
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
@@ -57,12 +58,12 @@ export default function CartPage() {
               className="flex gap-3 py-5 sm:gap-4"
             >
               <Link
-                href={`/products/${product.slug}`}
+                href={`/products/${line.slug}`}
                 className="relative h-16 w-16 flex-shrink-0 rounded-md bg-slate-50 sm:h-24 sm:w-24"
               >
                 <Image
-                  src={product.image}
-                  alt={product.name}
+                  src={line.image}
+                  alt={line.name}
                   fill
                   className="object-contain p-1.5 sm:p-2"
                   sizes="96px"
@@ -73,15 +74,14 @@ export default function CartPage() {
                 <div className="flex flex-wrap justify-between gap-x-2 gap-y-0.5">
                   <div className="min-w-0">
                     <Link
-                      href={`/products/${product.slug}`}
+                      href={`/products/${line.slug}`}
                       className="text-sm font-semibold text-slate-900 hover:text-teal-700"
                     >
-                      {product.name}
+                      {line.name}
                     </Link>
-                    <p className="text-xs text-slate-500">{product.brand}</p>
                   </div>
                   <p className="flex-shrink-0 whitespace-nowrap text-sm font-semibold text-slate-900">
-                    {formatPrice(price * item.quantity)}
+                    {formatPrice(line.price * line.quantity)}
                   </p>
                 </div>
 
@@ -89,19 +89,21 @@ export default function CartPage() {
                   <div className="flex items-center rounded-md border border-slate-300">
                     <button
                       type="button"
-                      className="px-2.5 py-1 text-slate-600 hover:text-teal-700"
-                      onClick={() => setQuantity(item.slug, item.quantity - 1)}
+                      className="px-2.5 py-1 text-slate-600 hover:text-teal-700 disabled:opacity-40"
+                      onClick={() => setQuantity(line.id, line.quantity - 1)}
+                      disabled={loading}
                       aria-label="Decrease quantity"
                     >
                       &minus;
                     </button>
                     <span className="w-8 text-center text-sm font-medium">
-                      {item.quantity}
+                      {line.quantity}
                     </span>
                     <button
                       type="button"
-                      className="px-2.5 py-1 text-slate-600 hover:text-teal-700"
-                      onClick={() => setQuantity(item.slug, item.quantity + 1)}
+                      className="px-2.5 py-1 text-slate-600 hover:text-teal-700 disabled:opacity-40"
+                      onClick={() => setQuantity(line.id, line.quantity + 1)}
+                      disabled={loading}
                       aria-label="Increase quantity"
                     >
                       +
@@ -109,16 +111,16 @@ export default function CartPage() {
                   </div>
                   <button
                     type="button"
-                    className="text-xs font-medium text-slate-500 hover:text-red-600"
-                    onClick={() => removeItem(item.slug)}
+                    className="text-xs font-medium text-slate-500 hover:text-red-600 disabled:opacity-40"
+                    onClick={() => removeItem(line.id)}
+                    disabled={loading}
                   >
                     Remove
                   </button>
                 </div>
               </div>
             </motion.div>
-          );
-        })}
+        ))}
         </AnimatePresence>
       </div>
 
@@ -132,12 +134,13 @@ export default function CartPage() {
         <p className="w-full max-w-xs text-right text-xs text-slate-400 sm:w-64">
           Shipping and taxes calculated at checkout.
         </p>
-        <Link
-          href="/checkout"
-          className="mt-2 w-full max-w-xs rounded-md bg-teal-700 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-teal-800 sm:w-64"
+        <a
+          href={checkoutUrl}
+          aria-disabled={!checkoutUrl}
+          className="mt-2 w-full max-w-xs rounded-md bg-teal-700 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-teal-800 sm:w-64 aria-disabled:pointer-events-none aria-disabled:opacity-50"
         >
           Proceed to checkout
-        </Link>
+        </a>
       </div>
     </div>
   );
