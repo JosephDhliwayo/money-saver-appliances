@@ -50,7 +50,7 @@ export default function RepairsPage() {
       <h1 className="text-2xl font-bold text-slate-900">
         Appliance Repair Services
       </h1>
-      <p className="mt-2 inline-flex items-center gap-2 rounded-full bg-teal-50 px-4 py-1.5 text-sm font-semibold text-teal-800">
+      <p className="mt-2 inline-flex items-center gap-2 rounded-full bg-brand-50 px-4 py-1.5 text-sm font-semibold text-brand-800">
         &#128663; {business.repairTagline}
       </p>
       <p className="mt-4 text-slate-600">
@@ -72,14 +72,14 @@ export default function RepairsPage() {
             <ul className="mt-3 space-y-1.5 text-sm text-slate-600">
               {service.issues.map((issue) => (
                 <li key={issue} className="flex gap-2">
-                  <span className="text-teal-700">&bull;</span>
+                  <span className="text-brand-700">&bull;</span>
                   {issue}
                 </li>
               ))}
             </ul>
             <Link
               href={`/products?category=${encodeURIComponent(service.category)}`}
-              className="mt-4 inline-block text-sm font-medium text-teal-700 hover:text-teal-800"
+              className="mt-4 inline-block text-sm font-medium text-brand-700 hover:text-brand-800"
             >
               Shop new {service.category.toLowerCase()}
               {" "}&rarr;
@@ -88,7 +88,7 @@ export default function RepairsPage() {
         ))}
       </div>
 
-      <div className="mt-10 rounded-lg border border-teal-200 bg-teal-50 p-6">
+      <div className="mt-10 rounded-lg border border-brand-200 bg-brand-50 p-6">
         <p className="text-sm font-semibold text-slate-900">
           Schedule a repair
         </p>
@@ -97,7 +97,7 @@ export default function RepairsPage() {
           Most repairs are scheduled within 2&ndash;3 business days.
         </p>
         <div className="mt-4 flex flex-col gap-1 text-sm text-slate-700 sm:flex-row sm:gap-6">
-          <a href={business.phoneHref} className="hover:text-teal-800">
+          <a href={business.phoneHref} className="hover:text-brand-800">
             &#128222; {business.phone}
           </a>
           <span>

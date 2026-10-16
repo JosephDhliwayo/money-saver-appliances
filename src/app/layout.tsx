@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/cart-context";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { TermsConsentModal } from "@/components/terms-consent-modal";
-import { getCategories } from "@/lib/shopify";
+import { getAccountUrl, getCategories } from "@/lib/shopify";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,6 +15,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -34,15 +40,16 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const categories = await getCategories();
+  const accountUrl = getAccountUrl();
 
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col overflow-x-hidden bg-slate-50 text-slate-900">
+      <body className="min-h-full flex flex-col overflow-x-hidden bg-cream-100 text-slate-900">
         <CartProvider>
-          <SiteHeader categories={categories} />
+          <SiteHeader categories={categories} accountUrl={accountUrl} />
           <main className="flex-1">{children}</main>
           <SiteFooter />
           <TermsConsentModal />

@@ -30,7 +30,7 @@ export default function CheckoutPage() {
       </p>
       <Link
         href="/cart"
-        className="mt-6 inline-block text-sm font-medium text-teal-700 hover:text-teal-800"
+        className="mt-6 inline-block text-sm font-medium text-brand-700 hover:text-brand-800"
       >
         Back to cart
       </Link>

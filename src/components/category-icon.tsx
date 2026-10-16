@@ -1,23 +1,5 @@
 import type { Category } from "@/lib/products";
 
-const categoryStyles: Record<string, { bg: string; fg: string }> = {
-  Refrigerators: { bg: "bg-teal-100", fg: "text-teal-700" },
-  "Stoves & Ranges": { bg: "bg-orange-100", fg: "text-orange-700" },
-  Washers: { bg: "bg-blue-100", fg: "text-blue-700" },
-  Dryers: { bg: "bg-violet-100", fg: "text-violet-700" },
-  Dishwashers: { bg: "bg-sky-100", fg: "text-sky-700" },
-  Microwaves: { bg: "bg-amber-100", fg: "text-amber-700" },
-  Electronics: { bg: "bg-indigo-100", fg: "text-indigo-700" },
-  "Health and Beauty": { bg: "bg-pink-100", fg: "text-pink-700" },
-  "Lawn and Garden": { bg: "bg-green-100", fg: "text-green-700" },
-  "Kitchen and Bath": { bg: "bg-cyan-100", fg: "text-cyan-700" },
-  "Home Improvement": { bg: "bg-yellow-100", fg: "text-yellow-700" },
-  Bikes: { bg: "bg-lime-100", fg: "text-lime-700" },
-  Outdoor: { bg: "bg-stone-100", fg: "text-stone-700" },
-};
-
-const defaultStyle = { bg: "bg-slate-100", fg: "text-slate-700" };
-
 function IconGlyph({ category }: { category: Category }) {
   switch (category) {
     case "Refrigerators":
@@ -174,6 +156,21 @@ function IconGlyph({ category }: { category: Category }) {
           <path d="M12 4v16" stroke="currentColor" strokeWidth="1.4" />
         </svg>
       );
+    case "Automotive":
+      return (
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none">
+          <path
+            d="M4.5 16v-3.2l1.8-4.4A2 2 0 0 1 8.2 7h7.6a2 2 0 0 1 1.9 1.4l1.8 4.4V16"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinejoin="round"
+          />
+          <rect x="3" y="13" width="18" height="5" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
+          <circle cx="7.5" cy="18" r="1.6" stroke="currentColor" strokeWidth="1.5" />
+          <circle cx="16.5" cy="18" r="1.6" stroke="currentColor" strokeWidth="1.5" />
+          <line x1="6" y1="10.5" x2="18" y2="10.5" stroke="currentColor" strokeWidth="1.3" />
+        </svg>
+      );
     default:
       return (
         <svg viewBox="0 0 24 24" width="26" height="26" fill="none">
@@ -186,12 +183,5 @@ function IconGlyph({ category }: { category: Category }) {
 }
 
 export function CategoryIcon({ category }: { category: Category }) {
-  const style = categoryStyles[category] ?? defaultStyle;
-  return (
-    <span
-      className={`flex h-14 w-14 items-center justify-center rounded-full ${style.bg} ${style.fg}`}
-    >
-      <IconGlyph category={category} />
-    </span>
-  );
+  return <IconGlyph category={category} />;
 }

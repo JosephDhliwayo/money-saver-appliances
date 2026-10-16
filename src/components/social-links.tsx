@@ -32,10 +32,19 @@ const links = [
   },
 ];
 
-export function SocialLinks({ className }: { className?: string }) {
+export function SocialLinks({
+  className,
+  variant = "light",
+}: {
+  className?: string;
+  variant?: "light" | "dark";
+}) {
+  const isDark = variant === "dark";
   return (
     <div className={className}>
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+      <p
+        className={`text-xs font-semibold uppercase tracking-wide ${isDark ? "text-white/50" : "text-brand-700/70"}`}
+      >
         Follow us on
       </p>
       <div className="mt-2 flex gap-3">
@@ -46,7 +55,11 @@ export function SocialLinks({ className }: { className?: string }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={link.name}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 text-slate-300 transition-colors hover:border-teal-500 hover:text-teal-400"
+            className={`flex h-9 w-9 items-center justify-center rounded-full border transition-colors ${
+              isDark
+                ? "border-white/20 text-white/70 hover:border-gold-400 hover:text-gold-400"
+                : "border-brand-200 text-brand-700 hover:border-brand-700 hover:bg-brand-700 hover:text-white"
+            }`}
           >
             {link.icon}
           </a>

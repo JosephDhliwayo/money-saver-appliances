@@ -2,8 +2,33 @@
 
 :root {
   color-scheme: light;
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf6ec;
+  --foreground: #16211a;
+
+  --brand-50: #eef3ee;
+  --brand-100: #d7e4d7;
+  --brand-200: #b0c9b1;
+  --brand-300: #85ab88;
+  --brand-400: #5c8c62;
+  --brand-500: #3d6f44;
+  --brand-600: #2a5534;
+  --brand-700: #1f4328;
+  --brand-800: #17331f;
+  --brand-900: #0f2316;
+
+  --gold-50: #fbf4e0;
+  --gold-100: #f5e5b9;
+  --gold-200: #ecd088;
+  --gold-300: #e0b85e;
+  --gold-400: #cfa23e;
+  --gold-500: #c9a227;
+  --gold-600: #ab8720;
+  --gold-700: #8a6c1a;
+
+  --cream-50: #fffdf8;
+  --cream-100: #faf6ec;
+  --cream-200: #f1e9d6;
+  --cream-300: #e6dcbf;
 }
 
 @theme inline {
@@ -11,38 +36,45 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-fraunces);
+
+  --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-200: var(--brand-200);
+  --color-brand-300: var(--brand-300);
+  --color-brand-400: var(--brand-400);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-brand-800: var(--brand-800);
+  --color-brand-900: var(--brand-900);
+
+  --color-gold-50: var(--gold-50);
+  --color-gold-100: var(--gold-100);
+  --color-gold-200: var(--gold-200);
+  --color-gold-300: var(--gold-300);
+  --color-gold-400: var(--gold-400);
+  --color-gold-500: var(--gold-500);
+  --color-gold-600: var(--gold-600);
+  --color-gold-700: var(--gold-700);
+
+  --color-cream-50: var(--cream-50);
+  --color-cream-100: var(--cream-100);
+  --color-cream-200: var(--cream-200);
+  --color-cream-300: var(--cream-300);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
-@keyframes blob-float {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(3%, -4%) scale(1.08);
-  }
-  66% {
-    transform: translate(-3%, 3%) scale(0.95);
-  }
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.animate-blob {
-  animation: blob-float 14s ease-in-out infinite;
-}
-
-.animate-blob-delayed {
-  animation: blob-float 18s ease-in-out infinite;
-  animation-delay: -6s;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-blob,
-  .animate-blob-delayed {
-    animation: none;
-  }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

@@ -30,7 +30,7 @@ export function SearchBox({
         onChange={(e) => setValue(e.target.value)}
         placeholder="Search products..."
         aria-label="Search products"
-        className="w-full rounded-md border border-slate-300 py-2 pl-9 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-teal-700 focus:outline-none"
+        className="w-full rounded-md border border-slate-300 py-2 pl-9 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-brand-700 focus:outline-none"
       />
       <svg
         width="16"

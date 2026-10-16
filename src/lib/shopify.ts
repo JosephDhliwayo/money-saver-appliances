@@ -5,6 +5,10 @@ const domain = process.env.SHOPIFY_STORE_DOMAIN;
 const token = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
 const API_VERSION = "2025-10";
 
+export function getAccountUrl(): string | undefined {
+  return domain ? `https://${domain}/account` : undefined;
+}
+
 type ShopifyMoney = { amount: string };
 
 type ShopifyImageEdge = { node: { url: string; altText: string | null } };

@@ -30,14 +30,14 @@ export function CategoryFilterPills({
             href={option.href}
             className={`relative rounded-full border px-4 py-1.5 text-sm font-medium transition-colors ${
               isActive
-                ? "border-teal-700 text-white"
-                : "border-slate-300 text-slate-600 hover:border-teal-700 hover:text-teal-700"
+                ? "border-brand-700 text-white"
+                : "border-slate-300 text-slate-600 hover:border-brand-700 hover:text-brand-700"
             }`}
           >
             {isActive && (
               <motion.span
                 layoutId="active-category-pill"
-                className="absolute inset-0 rounded-full bg-teal-700"
+                className="absolute inset-0 rounded-full bg-brand-700"
                 transition={{ type: "spring", stiffness: 500, damping: 35 }}
               />
             )}

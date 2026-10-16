@@ -42,13 +42,13 @@ export default async function ProductPage({
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <nav className="text-sm text-slate-500">
-        <Link href="/products" className="hover:text-teal-700">
+        <Link href="/products" className="hover:text-brand-700">
           All products
         </Link>
         <span className="mx-2">/</span>
         <Link
           href={`/products?category=${encodeURIComponent(product.category)}`}
-          className="hover:text-teal-700"
+          className="hover:text-brand-700"
         >
           {product.category}
         </Link>

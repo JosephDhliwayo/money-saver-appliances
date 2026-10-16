@@ -1,66 +1,84 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useCart } from "@/context/cart-context";
 import type { Category } from "@/lib/products";
 import { SearchBox } from "@/components/search-box";
-import { HeaderCategoryMenu } from "@/components/header-category-menu";
+import { business } from "@/lib/business";
 
-export function SiteHeader({ categories }: { categories: Category[] }) {
+export function SiteHeader({
+  categories,
+  accountUrl,
+}: {
+  categories: Category[];
+  accountUrl?: string;
+}) {
   const { itemCount } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-2 px-3 sm:px-6">
-        <Link href="/" className="flex flex-shrink-0 items-center gap-2">
-          <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md bg-teal-700 text-sm font-bold text-white">
-            MS
-          </span>
-          <span className="text-base font-semibold text-slate-900 sm:text-lg">
+    <header className="sticky top-0 z-40 border-b border-cream-300 bg-cream-50/95 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-3 sm:px-6">
+        <Link href="/" className="flex flex-shrink-0 items-center gap-2.5">
+          <Image
+            src="/logo-icon.png"
+            alt={business.name}
+            width={40}
+            height={40}
+            priority
+            className="h-10 w-10 flex-shrink-0 rounded-md object-cover"
+          />
+          <span className="hidden font-serif text-lg font-semibold text-brand-900 sm:inline">
             Money Saver Appliances
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-6 md:flex">
-          <HeaderCategoryMenu categories={categories} />
-          <Link
-            href="/repairs"
-            className="text-sm font-medium text-slate-600 hover:text-teal-700"
-          >
-            Repairs
-          </Link>
-          <Link
-            href="/about"
-            className="text-sm font-medium text-slate-600 hover:text-teal-700"
-          >
-            About
-          </Link>
-        </nav>
+        <div className="hidden flex-1 max-w-md md:block">
+          <SearchBox />
+        </div>
 
-        <div className="flex flex-shrink-0 items-center gap-2 sm:gap-3">
+        <div className="flex flex-shrink-0 items-center gap-1.5 sm:gap-2">
+          {accountUrl && (
+            <a
+              href={accountUrl}
+              className="hidden rounded-md p-2 text-brand-800 transition-colors hover:bg-cream-200 hover:text-brand-700 sm:flex"
+              aria-label="Your account"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+                <circle cx="12" cy="8" r="3.5" stroke="currentColor" strokeWidth="1.6" />
+                <path
+                  d="M4.5 20c1.3-3.8 4.3-6 7.5-6s6.2 2.2 7.5 6"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </a>
+          )}
           <button
             type="button"
-            className="rounded-md border border-slate-300 p-2 text-slate-700 transition-colors hover:border-teal-700 hover:text-teal-700"
+            className="rounded-md p-2 text-brand-800 transition-colors hover:bg-cream-200 hover:text-brand-700 md:hidden"
             aria-label="Search"
             aria-expanded={searchOpen}
             onClick={() => setSearchOpen((v) => !v)}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
               <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8" />
               <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
             </svg>
           </button>
           <Link
             href="/cart"
-            className="relative flex items-center gap-1.5 rounded-md border border-slate-300 px-2.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-teal-700 hover:text-teal-700 sm:px-3"
+            className="relative flex items-center gap-1.5 rounded-md p-2 text-brand-800 transition-colors hover:bg-cream-200 hover:text-brand-700"
+            aria-label="Cart"
           >
             <svg
-              width="18"
-              height="18"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               className="flex-shrink-0"
@@ -76,7 +94,6 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
               <circle cx="10" cy="20" r="1.3" fill="currentColor" />
               <circle cx="17" cy="20" r="1.3" fill="currentColor" />
             </svg>
-            <span className="hidden min-[380px]:inline">Cart</span>
             <AnimatePresence mode="popLayout" initial={false}>
               {itemCount > 0 && (
                 <motion.span
@@ -85,7 +102,7 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.4, opacity: 0 }}
                   transition={{ type: "spring", stiffness: 500, damping: 20 }}
-                  className="flex h-5 min-w-5 items-center justify-center rounded-full bg-teal-700 px-1 text-xs font-semibold text-white"
+                  className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-gold-500 px-1 text-xs font-semibold text-brand-900"
                 >
                   {itemCount}
                 </motion.span>
@@ -94,7 +111,7 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
           </Link>
           <button
             type="button"
-            className="rounded-md border border-slate-300 p-2 text-slate-700 md:hidden"
+            className="rounded-md p-2 text-brand-800 md:hidden"
             aria-label="Toggle menu"
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((v) => !v)}
@@ -141,6 +158,41 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
         </div>
       </div>
 
+      {categories.length > 0 && (
+        <div className="hidden border-t border-cream-200 md:block">
+          <nav className="no-scrollbar mx-auto flex max-w-6xl items-center gap-5 overflow-x-auto whitespace-nowrap px-4 py-2.5 sm:px-6">
+            {categories.map((category) => (
+              <Link
+                key={category}
+                href={`/products?category=${encodeURIComponent(category)}`}
+                className="flex-shrink-0 text-sm font-medium text-brand-800/80 transition-colors hover:text-brand-700"
+              >
+                {category}
+              </Link>
+            ))}
+            <span className="flex-shrink-0 text-cream-300">|</span>
+            <Link
+              href="/repairs"
+              className="flex-shrink-0 text-sm font-medium text-brand-800/80 transition-colors hover:text-brand-700"
+            >
+              Repairs
+            </Link>
+            <Link
+              href="/about"
+              className="flex-shrink-0 text-sm font-medium text-brand-800/80 transition-colors hover:text-brand-700"
+            >
+              About
+            </Link>
+            <Link
+              href="/products?sale=1"
+              className="flex-shrink-0 text-sm font-semibold text-gold-600 transition-colors hover:text-gold-700"
+            >
+              Special Offers
+            </Link>
+          </nav>
+        </div>
+      )}
+
       <AnimatePresence initial={false}>
         {searchOpen && (
           <motion.div
@@ -148,7 +200,7 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="overflow-hidden border-t border-slate-200"
+            className="overflow-hidden border-t border-cream-200 md:hidden"
           >
             <div className="mx-auto max-w-6xl px-4 py-3 sm:px-6">
               <SearchBox onNavigate={() => setSearchOpen(false)} />
@@ -164,33 +216,56 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="flex flex-col gap-1 overflow-hidden border-t border-slate-200 px-4 md:hidden"
+            className="flex flex-col gap-1 overflow-hidden border-t border-cream-200 px-4 md:hidden"
           >
             <div className="flex flex-col gap-1 py-3">
               {categories.map((category) => (
                 <Link
                   key={category}
                   href={`/products?category=${encodeURIComponent(category)}`}
-                  className="rounded-md px-2 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                  className="rounded-md px-2 py-2 text-sm font-medium text-brand-900 hover:bg-cream-200"
                   onClick={() => setMenuOpen(false)}
                 >
                   {category}
                 </Link>
               ))}
               <Link
+                href="/products?sale=1"
+                className="rounded-md px-2 py-2 text-sm font-semibold text-gold-600 hover:bg-cream-200"
+                onClick={() => setMenuOpen(false)}
+              >
+                Special Offers
+              </Link>
+              <Link
                 href="/repairs"
-                className="rounded-md px-2 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                className="rounded-md px-2 py-2 text-sm font-medium text-brand-900 hover:bg-cream-200"
                 onClick={() => setMenuOpen(false)}
               >
                 Repairs
               </Link>
               <Link
                 href="/about"
-                className="rounded-md px-2 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                className="rounded-md px-2 py-2 text-sm font-medium text-brand-900 hover:bg-cream-200"
                 onClick={() => setMenuOpen(false)}
               >
                 About
               </Link>
+              {accountUrl && (
+                <a
+                  href={accountUrl}
+                  className="rounded-md px-2 py-2 text-sm font-medium text-brand-900 hover:bg-cream-200"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Your account
+                </a>
+              )}
+              <a
+                href={business.phoneHref}
+                className="rounded-md px-2 py-2 text-sm font-medium text-brand-900 hover:bg-cream-200"
+                onClick={() => setMenuOpen(false)}
+              >
+                Call {business.phone}
+              </a>
             </div>
           </motion.nav>
         )}

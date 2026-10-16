@@ -1,7 +1,7 @@
 import type { Category } from "@/lib/products";
 
 const knownGradients: Record<string, string> = {
-  Refrigerators: "from-teal-50 to-teal-100/70",
+  Refrigerators: "from-brand-50 to-brand-100/70",
   "Stoves & Ranges": "from-orange-50 to-orange-100/70",
   Washers: "from-blue-50 to-blue-100/70",
   Dryers: "from-violet-50 to-violet-100/70",
@@ -14,6 +14,7 @@ const knownGradients: Record<string, string> = {
   "Home Improvement": "from-yellow-50 to-yellow-100/70",
   Bikes: "from-lime-50 to-lime-100/70",
   Outdoor: "from-stone-50 to-stone-100/70",
+  Automotive: "from-red-50 to-red-100/70",
 };
 
 const defaultGradient = "from-slate-50 to-slate-100/70";

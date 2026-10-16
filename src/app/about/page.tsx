@@ -37,7 +37,7 @@ export default function AboutPage() {
         <div className="rounded-lg border border-slate-200 bg-white p-5">
           <p className="text-sm font-semibold text-slate-900">Call us</p>
           <p className="mt-1 text-sm text-slate-600">
-            <a href={business.phoneHref} className="hover:text-teal-700">
+            <a href={business.phoneHref} className="hover:text-brand-700">
               {business.phone}
             </a>
           </p>

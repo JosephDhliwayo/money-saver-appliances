@@ -12,18 +12,26 @@ export const revalidate = 60;
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string; q?: string }>;
+  searchParams: Promise<{ category?: string; q?: string; sale?: string }>;
 }) {
-  const { category: rawCategory, q } = await searchParams;
+  const { category: rawCategory, q, sale } = await searchParams;
   const categories = await getCategories();
   const category = rawCategory && categories.includes(rawCategory) ? rawCategory : undefined;
-  const items = await getProductsByCategory(category, q);
+  const onSaleOnly = sale === "1";
+  const fetched = await getProductsByCategory(category, q);
+  const items = onSaleOnly
+    ? fetched.filter((p) => p.salePrice !== undefined)
+    : fetched;
 
-  const heading = q ? `Search results for "${q}"` : category ?? "All Products";
+  const heading = onSaleOnly
+    ? "Special Offers"
+    : q
+      ? `Search results for "${q}"`
+      : category ?? "All Products";
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <h1 className="text-2xl font-bold text-slate-900">{heading}</h1>
+      <h1 className="text-2xl font-bold text-brand-900">{heading}</h1>
       <p className="mt-1 text-sm text-slate-500">
         {items.length} product{items.length === 1 ? "" : "s"}
       </p>

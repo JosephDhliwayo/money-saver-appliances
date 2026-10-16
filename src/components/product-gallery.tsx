@@ -42,8 +42,8 @@ export function ProductGallery({
               aria-current={i === active}
               className={`relative aspect-square overflow-hidden rounded-md border bg-white transition-colors ${
                 i === active
-                  ? "border-teal-700 ring-2 ring-teal-700/30"
-                  : "border-slate-200 hover:border-teal-700"
+                  ? "border-brand-700 ring-2 ring-brand-700/30"
+                  : "border-slate-200 hover:border-brand-700"
               }`}
             >
               <Image

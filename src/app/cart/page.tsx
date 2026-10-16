@@ -28,7 +28,7 @@ export default function CartPage() {
             </p>
             <Link
               href="/products"
-              className="mt-6 inline-block rounded-md bg-teal-700 px-6 py-2.5 text-sm font-semibold text-white hover:bg-teal-800"
+              className="mt-6 inline-block rounded-md bg-brand-700 px-6 py-2.5 text-sm font-semibold text-white hover:bg-brand-800"
             >
               Shop now
             </Link>
@@ -75,7 +75,7 @@ export default function CartPage() {
                   <div className="min-w-0">
                     <Link
                       href={`/products/${line.slug}`}
-                      className="text-sm font-semibold text-slate-900 hover:text-teal-700"
+                      className="text-sm font-semibold text-slate-900 hover:text-brand-700"
                     >
                       {line.name}
                     </Link>
@@ -89,7 +89,7 @@ export default function CartPage() {
                   <div className="flex items-center rounded-md border border-slate-300">
                     <button
                       type="button"
-                      className="px-2.5 py-1 text-slate-600 hover:text-teal-700 disabled:opacity-40"
+                      className="px-2.5 py-1 text-slate-600 hover:text-brand-700 disabled:opacity-40"
                       onClick={() => setQuantity(line.id, line.quantity - 1)}
                       disabled={loading}
                       aria-label="Decrease quantity"
@@ -101,7 +101,7 @@ export default function CartPage() {
                     </span>
                     <button
                       type="button"
-                      className="px-2.5 py-1 text-slate-600 hover:text-teal-700 disabled:opacity-40"
+                      className="px-2.5 py-1 text-slate-600 hover:text-brand-700 disabled:opacity-40"
                       onClick={() => setQuantity(line.id, line.quantity + 1)}
                       disabled={loading}
                       aria-label="Increase quantity"
@@ -137,7 +137,7 @@ export default function CartPage() {
         <a
           href={checkoutUrl}
           aria-disabled={!checkoutUrl}
-          className="mt-2 w-full max-w-xs rounded-md bg-teal-700 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-teal-800 sm:w-64 aria-disabled:pointer-events-none aria-disabled:opacity-50"
+          className="mt-2 w-full max-w-xs rounded-md bg-brand-700 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-brand-800 sm:w-64 aria-disabled:pointer-events-none aria-disabled:opacity-50"
         >
           Proceed to checkout
         </a>

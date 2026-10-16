@@ -23,7 +23,7 @@ export function AddToCartControls({
         <motion.button
           type="button"
           whileTap={{ scale: 0.85 }}
-          className="px-3 py-2 text-slate-600 hover:text-teal-700 disabled:opacity-40"
+          className="px-3 py-2 text-slate-600 hover:text-brand-700 disabled:opacity-40"
           onClick={() => setQuantity((q) => Math.max(1, q - 1))}
           disabled={!inStock}
           aria-label="Decrease quantity"
@@ -42,7 +42,7 @@ export function AddToCartControls({
         <motion.button
           type="button"
           whileTap={{ scale: 0.85 }}
-          className="px-3 py-2 text-slate-600 hover:text-teal-700 disabled:opacity-40"
+          className="px-3 py-2 text-slate-600 hover:text-brand-700 disabled:opacity-40"
           onClick={() => setQuantity((q) => Math.min(10, q + 1))}
           disabled={!inStock}
           aria-label="Increase quantity"
@@ -63,7 +63,7 @@ export function AddToCartControls({
           setAdded(true);
           setTimeout(() => setAdded(false), 1500);
         }}
-        className="flex items-center justify-center gap-2 rounded-md bg-teal-700 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-teal-800 disabled:cursor-not-allowed disabled:bg-slate-300"
+        className="flex items-center justify-center gap-2 rounded-md bg-brand-700 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:cursor-not-allowed disabled:bg-slate-300"
       >
         <AnimatePresence mode="wait" initial={false}>
           {!inStock ? (
@@ -119,7 +119,7 @@ export function AddToCartControls({
           await addItem(variantId, quantity);
           router.push("/cart");
         }}
-        className="rounded-md border border-teal-700 px-6 py-2.5 text-sm font-semibold text-teal-700 transition-colors hover:bg-teal-50 disabled:cursor-not-allowed disabled:border-slate-300 disabled:text-slate-400"
+        className="rounded-md border border-brand-700 px-6 py-2.5 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-50 disabled:cursor-not-allowed disabled:border-slate-300 disabled:text-slate-400"
       >
         Buy now
       </motion.button>

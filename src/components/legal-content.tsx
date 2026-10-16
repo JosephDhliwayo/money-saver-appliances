@@ -17,7 +17,7 @@ export function LegalContent({
           [&_h3]:mt-6 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-slate-900
           [&_p]:mt-3 [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:space-y-1.5 [&_ul]:pl-5
           [&_strong]:font-semibold [&_strong]:text-slate-800
-          [&_a]:text-teal-700 [&_a]:underline [&_a]:hover:text-teal-800"
+          [&_a]:text-brand-700 [&_a]:underline [&_a]:hover:text-brand-800"
       >
         {children}
       </div>

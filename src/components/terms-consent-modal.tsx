@@ -33,11 +33,11 @@ export function TermsConsentModal() {
           By using the {business.name} website, placing an order,
           requesting delivery, or scheduling repair service, you agree to
           our{" "}
-          <Link href="/legal/terms" className="text-teal-700 underline hover:text-teal-800">
+          <Link href="/legal/terms" className="text-brand-700 underline hover:text-brand-800">
             Terms and Conditions
           </Link>{" "}
           and{" "}
-          <Link href="/legal/privacy-policy" className="text-teal-700 underline hover:text-teal-800">
+          <Link href="/legal/privacy-policy" className="text-brand-700 underline hover:text-brand-800">
             Privacy Policy
           </Link>
           .
@@ -45,7 +45,7 @@ export function TermsConsentModal() {
         <button
           type="button"
           onClick={handleAccept}
-          className="mt-5 w-full rounded-md bg-teal-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-teal-800"
+          className="mt-5 w-full rounded-md bg-brand-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-800"
         >
           Accept &amp; Continue
         </button>
